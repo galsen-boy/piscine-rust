@@ -14,7 +14,7 @@ impl Circle {
     pub fn area(&self) -> f64 {
         std::f64::consts::PI * self.radius * self.radius
     }
-    pub fn diameter(&self) -> {
+    pub fn diameter(&self) -> f64 {
         self.radius * 2.0
     }
 }
