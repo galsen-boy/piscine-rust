@@ -1,39 +1,39 @@
-pub fn mean(numbers: &Vec<i32>) -> f64 {
-    let mut result: f64 = 0.0;
-    for num in numbers {
-        result += *num as f64;
-    }
+pub fn mean(list: &Vec<i32>) -> f64 {
+    let sum: i32 = list.iter().sum(); 
+    let count = list.len() as f64; 
+    let mean = sum as f64 / count; 
 
-    result /= numbers.len() as f64;
-
-    result
+    mean
 }
 
-pub fn median(numbers: &[i32]) -> i32 {
-    list .sort();
-    let length = sorted_numbers.len();
-
+pub fn median(list: &Vec<i32>) -> i32 {
+    let mut list_final = list.clone(); 
+    list_final.sort();
+    let length = list_final.len();
     if length % 2 == 0 {
-        (sorted_numbers[length / 2 - 1] + sorted_numbers[length / 2]) / 2
+        let x = length / 2;
+        (list_final[x - 1] + list_final[x]) / 2
     } else {
-        sorted_numbers[length / 2]
+        
+        list_final[length / 2]
     }
 }
+use std::collections::HashMap;
+pub fn mode(list: &Vec<i32>) -> i32 {
+    let mut count_map: HashMap<i32, i32> = HashMap::new();
 
-pub fn mode(numbers: &Vec<i32>) -> i32 {
-    let mut counter: Vec<i32> = vec![0; 100];
-    for num in numbers {
-        counter[*num as usize] += 1;
+    for &num in list {
+        let count = count_map.entry(num).or_insert(0);
+        *count += 1;
     }
-
-    let mut max_count: i32 = 0;
-    let mut max_index: usize = 0;
-    for (index, count) in counter.iter().enumerate() {
-        if *count > max_count {
-            max_count = *count;
-            max_index = index;
+    let mut mode = 0;
+    let mut max_count = 0;
+    for (&num, &count) in count_map.iter() {
+        if count > max_count {
+            mode = num;
+            max_count = count;
         }
     }
 
-    max_index as i32
+    mode
 }
