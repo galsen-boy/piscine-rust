@@ -7,4 +7,4 @@ pub fn is_anagram(s1: &str, s2: &str) -> bool {
     s2_chars.sort();
 
     s1_chars == s2_chars
-}
+}&
