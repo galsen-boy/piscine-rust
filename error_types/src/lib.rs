@@ -1,76 +1,79 @@
 pub use chrono::{Utc, NaiveDate};
 
-// this will be the structure that wil handle the errors
 #[derive(Debug, Eq, PartialEq)]
-pub struct FErr {
+pub struct FormError {
     pub form_values: (String, String),
     pub date: String,
     pub err: String,
 }
-impl FErr {
-    pub fn new(name: String, error: String, err: String) -> FErr {
-        Self {
-            form_values: (name, error),
-            date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+
+impl FormError {
+    pub fn new(field_name: String, field_value: String, err: String) -> FormError {
+        let date = Utc::now().format("%Y-%m-%d %H:%M:%S").to_string();
+        FormError {
+            form_values: (field_name, field_value),
+            date,
             err,
         }
     }
 }
-#[derive(Debug, Eq, PartialEq)]
-pub enum Color {
-    Red,
-    Green,
-    Blue,
-}
+
 #[derive(Debug, Eq, PartialEq)]
 pub struct Form {
     pub first_name: String,
     pub last_name: String,
     pub birth: NaiveDate,
-    pub fav_colour: Color,
     pub birth_location: String,
     pub password: String,
 }
+
 impl Form {
     pub fn new(
         first_name: String,
         last_name: String,
         birth: NaiveDate,
-        fav_colour: Color,
         birth_location: String,
         password: String,
-    ) -> Self {
-        Self {
+    ) -> Form {
+        Form {
             first_name,
             last_name,
             birth,
-            fav_colour,
             birth_location,
             password,
         }
     }
-    pub fn validate(&self) -> Result<Vec<&str>, FErr> {
+
+    pub fn validate(&self) -> Result<Vec<&str>, FormError> {
+        let mut errors = Vec::new();
+
         if self.first_name.is_empty() {
-            return Err(FErr::new("first_name".to_string(),
-                                 self.first_name.clone(),
-                                 "No user name".to_string(),
-            ));
+            let err = FormError::new(String::from("first_name"), self.first_name.clone(), String::from("No user name"));
+            return Err(err);
+        } else {
+            errors.push("Valid first name");
         }
+
         if self.password.len() < 8 {
-            return Err(FErr::new("password".to_string(),
-                                 self.password.clone(),
-                                 "At least 8 characters".to_string(),
-            ));
+            let err = FormError::new(String::from("password"), self.password.clone(), String::from("At least 8 characters"));
+            return Err(err);
         }
-        if !self.password.chars().any(|ch| ch.is_alphabetic()) ||
-            !self.password.chars().any(|ch| ch.is_numeric()) ||
-            !self.password.chars().any(|ch| !ch.is_alphanumeric())
-        {
-            return Err(FErr::new("password".to_string(),
-                                 self.password.clone(),
-                                 "Combination of different ASCII character types (numbers, letters and none alphanumeric characters)".to_string(),
-            ));
+
+        let has_alphabetic = self.password.chars().any(|c| c.is_alphabetic());
+        let has_numeric = self.password.chars().any(|c| c.is_numeric());
+        let has_non_alphanumeric = self.password.chars().any(|c| !c.is_alphanumeric());
+
+        if !has_alphabetic || !has_numeric || !has_non_alphanumeric {
+            let err = FormError::new(String::from("password"), self.password.clone(), String::from("Combination of different ASCII character types (numbers, letters and none alphanumeric characters)"));
+            return Err(err);
         }
-        Ok(vec!["Valid first name", "Valid password"])
+
+        errors.push("Valid password");
+
+        Ok(errors)
     }
+}
+
+pub fn create_date_from_string(date_str: &str) -> Result<NaiveDate, chrono::format::ParseError> {
+    NaiveDate::parse_from_str(date_str, "%Y-%m-%d")
 }
