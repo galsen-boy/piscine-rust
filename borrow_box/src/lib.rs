@@ -4,7 +4,7 @@ pub struct GameSession {
     pub id: u32,
     pub p1: (String, u16),
     pub p2: (String, u16),
-    pub nbr_of_games: u16,
+    pub nb_games: u16,
 }
 impl GameSession {
     pub fn new(i: u32, pl1: String, pl2: String, n: u16) -> Box<GameSession> {
@@ -12,7 +12,7 @@ impl GameSession {
             id: i,
             p1: (pl1, 0),
             p2: (pl2, 0),
-            nbr_of_games: n,
+            nb_games: n,
         })
     }
     pub fn read_winner(&self) -> (String, u16) {
@@ -35,9 +35,9 @@ impl GameSession {
         p.1 += 1;
     }
     fn is_ended(&self) -> bool {
-        self.p1.1 + self.p2.1 >= self.nbr_of_games
-            || self.p1.1 > self.nbr_of_games / 2
-            || self.p2.1 > self.nbr_of_games / 2
+        self.p1.1 + self.p2.1 >= self.nb_games
+            || self.p1.1 > self.nb_games / 2
+            || self.p2.1 > self.nb_games / 2
     }
     pub fn delete(self) -> String {
         format!("game deleted: id -> {}", self.id)
