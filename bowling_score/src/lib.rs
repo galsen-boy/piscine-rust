@@ -63,7 +63,7 @@ impl BowlingGame {
         let mut score = 0;
         let mut frame_index = 0;
 
-        for frame in 1..=10 {
+        for _frame in 1..=10 {
             if frame_index >= self.rolls.len() {
                 return None;
             }
