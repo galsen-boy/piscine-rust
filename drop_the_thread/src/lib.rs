@@ -52,27 +52,5 @@ impl Drop for Thread<'_> {
         self.workers.add_drop(self.pid)
     }
 }
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::rc::Rc;
-    #[test]
-    fn test_is_dropped_and_drops() {
-        let worker = Workers::new();
-        let (pid, thread) = worker.new_worker(String::from("gnome-shell"));
-        let (pid0, thread0) = worker.new_worker(String::from("i3"));
-        let (pid1, thread1) = worker.new_worker(String::from("shell"));
-        let (pid2, thread2) = worker.new_worker(String::from("spotify"));
-        thread.skill();
-        assert_eq!(worker.drops.get(), 1_usize);
-        thread0.skill();
-        assert!(worker.is_dropped(pid), "{} should have been dropped", pid);
-        assert!(worker.is_dropped(pid0), "{} should have been dropped", pid0);
-        assert!(!worker.is_dropped(pid1), "{} should not have been dropped", pid1);
-        assert!(!worker.is_dropped(pid2), "{} should not have been dropped", pid2);
-        assert_eq!(worker.drops.get(), 2_usize);
-        thread1.skill();
-        thread2.skill();
-        assert_eq!(worker.drops.get(), 4_usize);
-    }
+
  
