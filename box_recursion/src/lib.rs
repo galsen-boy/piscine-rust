@@ -38,7 +38,7 @@ impl WorkEnvironment {
             worker.worker_name
         })
     }
-    pub fn search_worker(&self) -> Option<(String, String)> {
+    pub fn last_worker(&self) -> Option<(String, String)> {
         self.grade.as_ref().map(|worker| (worker.worker_name.clone(), worker.worker_type.clone()))
     }
 }
