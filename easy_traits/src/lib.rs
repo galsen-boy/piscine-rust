@@ -17,11 +17,12 @@ impl AppendStr for StringValue {
         self.clone()
     }
     fn append_number(&mut self, nb_to_append: f64) -> Self {
-        self.value.push_str(&nb_to_append.to_string());
-        self.clone()
+        self.append_str(nb_to_append.to_string())
     }
     fn remove_punctuation_marks(&mut self) -> Self {
-        self.value.retain(|c| c.is_ascii_alphanumeric() && c == ' ');
+        self.value = self
+            .value
+            .replace(|c: char| char::is_ascii_punctuation(&c) && c != '-', "");
         self.clone()
     }
 }
