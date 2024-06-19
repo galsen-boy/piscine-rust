@@ -96,12 +96,3 @@ fn upto_999999(n: u64) -> Cow<'static, str> {
         _ => panic!("Number larger than 999999"),
     }
 }
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn it_works() {
-        println!("{}", spell(348));
-        println!("{}", spell(59696));
-    }
-}
