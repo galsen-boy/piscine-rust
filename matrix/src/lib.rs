@@ -1,3 +1,5 @@
+pub mod ops;
+pub mod mult;
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Matrix<T>(pub Vec<Vec<T>>);
 impl<T: Scalar<Item=T>> Matrix<T> {
