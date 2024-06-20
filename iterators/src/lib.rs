@@ -10,7 +10,7 @@ impl Iterator for Collatz {
         if self.v == 1 {
             None
         } else {
-            let current = self.v;
+            let current = self;
             self.v = if self.v % 2 == 0 {
                 self.v / 2
             } else {
