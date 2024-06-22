@@ -4,3 +4,4 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+roman_numbers_iter = { path = "../../solutions/roman_numbers_iter"}
